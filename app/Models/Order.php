@@ -17,6 +17,7 @@ class Order extends Model
     protected $fillable = [
         'customer_id',
         'total_price',
+        'status',
     ];
 
     public function products()
@@ -32,5 +33,13 @@ class Order extends Model
     public function items()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * Get the customer for the order.
+     */
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class);
     }
 }
