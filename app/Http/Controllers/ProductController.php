@@ -7,12 +7,17 @@ use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::paginate(10); // Ensure this fetches data from the database
-        // dd($products); // Debugging: Check if this contains data
+        $query = Product::query();
 
-        return view('products.index', compact('products')); // Pass the data to the view
+        if ($request->has('search') && $request->search) {
+            $query->where('name', 'like', '%'.$request->search.'%');
+        }
+
+        $products = $query->paginate(10);
+
+        return view('products.index', compact('products'));
     }
 
     public function create()

@@ -27,8 +27,6 @@ class CustomerSeeder extends Seeder
                 $quantity = rand(1, 5);
                 // Calculate the total price of the selected products
                 $totalPrice = $selectedProducts->sum(function ($product) use ($quantity) {
-                    $quantity = rand(1, 5); // Randomly select a quantity between 1 and 5
-
                     return $product->price * $quantity;
                 });
 
@@ -47,11 +45,6 @@ class CustomerSeeder extends Seeder
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]);
-
-                // Attach products to the order with quantities
-                // $order->products()->attach($orderItems);
-
-                // Calculate total price for the order
 
                 // Update the order's total price
                 $order->update(['total_price' => $totalPrice]);

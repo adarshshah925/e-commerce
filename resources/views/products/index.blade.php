@@ -1,40 +1,54 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 style="text-align: center; font-family: Arial, sans-serif;">Products</h1>
-    <a href="{{ route('products.create') }}"
-        style="display: inline-block; margin-bottom: 15px; background-color: #28A745; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px;">Add
-        Product</a>
-    <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif;">
-        <thead>
-            <tr>
-                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Name</th>
-                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Price</th>
-                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Stock</th>
-                <th style="border: 1px solid #ddd; padding: 8px; text-align: left;">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($products as $product)
-                <tr>
-                    <td style="border: 1px solid #ddd; padding: 8px;">{{ $product->name }}</td>
-                    <td style="border: 1px solid #ddd; padding: 8px;">{{ $product->price }}</td>
-                    <td style="border: 1px solid #ddd; padding: 8px;">{{ $product->stock }}</td>
-                    <td style="border: 1px solid #ddd; padding: 8px;">
-                        <a href="{{ route('products.edit', $product) }}"
-                            style="background-color: #FFC107; color: white; padding: 5px 10px; text-decoration: none; border-radius: 4px;">Edit</a>
-                        <form action="{{ route('products.destroy', $product) }}" method="POST" style="display: inline;">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit"
-                                style="background-color: #DC3545; color: white; padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer;">Delete</button>
-                        </form>
-                    </td>
+    <div class="container mx-auto p-6 bg-white shadow-md rounded">
+        <h1 class="text-2xl font-bold mb-4">Products</h1>
+
+        <!-- Search Form -->
+        <form method="GET" action="{{ route('products.index') }}" class="mb-6">
+            <div class="flex items-center space-x-4">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name"
+                    class="border border-gray-300 rounded px-4 py-2 w-full">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
+            </div>
+        </form>
+
+        <a href="{{ route('products.create') }}"
+            class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 mb-6 inline-block">Add Product</a>
+
+        <table class="table-auto w-full border-collapse border border-gray-300 mb-6">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border border-gray-300 px-4 py-2">Name</th>
+                    <th class="border border-gray-300 px-4 py-2">Price</th>
+                    <th class="border border-gray-300 px-4 py-2">Stock</th>
+                    <th class="border border-gray-300 px-4 py-2">Actions</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <div style="margin-top: 15px;">
-        {{ $products->links() }}
+            </thead>
+            <tbody>
+                @foreach ($products as $product)
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2">{{ $product->name }}</td>
+                        <td class="border border-gray-300 px-4 py-2">${{ number_format($product->price, 2) }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $product->stock }}</td>
+                        <td class="border border-gray-300 px-4 py-2">
+                            <form action="{{ route('products.edit', $product) }}" method="GET" class="inline">
+                                <button type="submit"
+                                    class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">Edit</button>
+                            </form>
+                            <form action="{{ route('products.destroy', $product) }}" method="POST" class="inline">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"
+                                    class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <div class="mt-4">
+            {{ $products->links('pagination::tailwind') }}
+        </div>
     </div>
 @endsection

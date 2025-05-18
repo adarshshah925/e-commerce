@@ -1,28 +1,38 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1 style="text-align: center; font-family: 'Helvetica Neue', Arial, sans-serif; color: #2c3e50; margin-bottom: 20px;">
-        Customers</h1>
-    <table
-        style="width: 100%; border-collapse: collapse; margin: 20px 0; font-family: 'Helvetica Neue', Arial, sans-serif; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
-        <thead>
-            <tr style="background-color: #34495e; color: #ecf0f1; text-align: left;">
-                <th style="padding: 12px; border: 1px solid #ddd;">Name</th>
-                <th style="padding: 12px; border: 1px solid #ddd;">Email</th>
-                <th style="padding: 12px; border: 1px solid #ddd;">Total Orders</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($customers as $customer)
-                <tr style="background-color: {{ $loop->even ? '#f9f9f9' : '#ffffff' }};">
-                    <td style="padding: 12px; border: 1px solid #ddd;">{{ $customer->name }}</td>
-                    <td style="padding: 12px; border: 1px solid #ddd;">{{ $customer->email }}</td>
-                    <td style="padding: 12px; border: 1px solid #ddd;">{{ $customer->orders_count }}</td>
+    <div class="container mx-auto p-6 bg-white shadow-md rounded">
+        <h1 class="text-2xl font-bold mb-4">Customers</h1>
+
+        <!-- Search Form -->
+        <form method="GET" action="{{ route('customers.index') }}" class="mb-6">
+            <div class="flex items-center space-x-4">
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name or email"
+                    class="border border-gray-300 rounded px-4 py-2 w-full">
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Search</button>
+            </div>
+        </form>
+
+        <table class="table-auto w-full border-collapse border border-gray-300 mb-6">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="border border-gray-300 px-4 py-2">Name</th>
+                    <th class="border border-gray-300 px-4 py-2">Email</th>
+                    <th class="border border-gray-300 px-4 py-2">Total Orders</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <div style="text-align: center; margin-top: 20px;">
-        {{ $customers->links() }}
+            </thead>
+            <tbody>
+                @foreach ($customers as $customer)
+                    <tr>
+                        <td class="border border-gray-300 px-4 py-2">{{ $customer->name }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $customer->email }}</td>
+                        <td class="border border-gray-300 px-4 py-2">{{ $customer->orders_count }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+        <div class="mt-4">
+            {{ $customers->links('pagination::tailwind') }}
+        </div>
     </div>
 @endsection
