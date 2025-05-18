@@ -57,15 +57,5 @@ class CustomerSeeder extends Seeder
                 $order->update(['total_price' => $totalPrice]);
             }
         });
-
-        for ($i = 1; $i <= 20; ++$i) {
-            DB::table('customers')->insert([
-                'name' => "Customer $i",
-                'email' => "customer$i@example.com",
-                'phone' => rand(1000000000, 9999999999),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
     }
 }
