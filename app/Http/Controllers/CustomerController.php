@@ -17,7 +17,7 @@ class CustomerController extends Controller
                   ->orWhere('email', 'like', "%{$search}%");
         }
 
-        $customers = $query->withCount('orders')->paginate(10);
+        $customers = $query->withCount('orders')->orderBy('id', 'desc')->paginate(10);
 
         return view('customers.index', compact('customers'));
     }

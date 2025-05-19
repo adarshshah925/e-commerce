@@ -18,7 +18,7 @@ class OrderController extends Controller
             });
         }
 
-        $orders = $query->paginate(10);
+        $orders = $query->orderBy('id', 'desc')->paginate(10);
 
         return view('orders.index', compact('orders'));
     }
